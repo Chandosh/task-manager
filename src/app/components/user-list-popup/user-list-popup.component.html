@@ -1,0 +1,23 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+
+<h2 mat-dialog-title>{{userConstant?.header}}</h2>
+    <mat-dialog-content class="mat-typography" fxLayout="row wrap" fxLayoutGap="20px">
+        <span *ngFor="let user of userList?.users" >
+            <mat-card class="user-card" (click)="selectedUser=user.id" [ngClass]="{'selected': selectedUser === user.id }">
+                <mat-card-header fxLayoutAlign="start center">
+                    <div mat-card-avatar class="user-header-image">
+                        <img class="image" [src]="user?.picture" alt="User">
+                    </div>
+                    <mat-card-title>{{user?.name}}</mat-card-title>
+                </mat-card-header>
+            </mat-card>
+        </span>
+    </mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{userConstant?.cancel}}</button>
+  <button mat-button color="primary" [disabled]="!selectedUser" (click)="closeDialog()">
+      {{userConstant?.select}}
+    </button>
+</mat-dialog-actions>

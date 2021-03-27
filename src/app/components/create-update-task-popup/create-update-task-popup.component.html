@@ -1,0 +1,57 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+
+<h2 mat-dialog-title>{{isUpdateMode ? taskConstant?.updateHeader : taskConstant?.createHeader}}</h2>
+    <mat-dialog-content class="mat-typography" fxLayout="row wrap">
+        <form class="task-form" [formGroup]="createForm">
+            <mat-label>{{taskConstant?.message}}</mat-label>
+            <mat-form-field class="task-full-width" appearance="outline">
+              <textarea formControlName="message" matInput 
+              matTextareaAutosize='false' rows="2" cols="40" maxlength= "100"
+              [placeholder]="taskConstant?.messagePlaceholder" >
+              </textarea>
+              <mat-hint align="end">{{createForm.get('message').value.length || 0}}/100</mat-hint>
+              <mat-error *ngIf="!createForm.get('message').valid">
+                {{taskConstant?.messageRequired}}
+              </mat-error>
+            </mat-form-field>
+            <mat-label>{{taskConstant?.priority}}</mat-label>
+            <mat-form-field class="task-full-width" appearance="outline">
+                <mat-label>{{taskConstant?.selectPriority}}</mat-label>
+                <mat-select formControlName="priority">
+                  <mat-option *ngFor="let prio of priority" [value]="prio.key">{{prio.value}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <span fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                <span fxFlex= "50%">
+                    <mat-label>{{taskConstant?.dueDate}}</mat-label>
+                    <mat-form-field class="task-full-width" appearance="outline">
+                        <mat-label>{{taskConstant?.dueDatePlaceholder}}</mat-label>
+                        <input formControlName="due_date" matInput [min]="minDate" [matDatepicker]="picker" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </span>
+                <span fxFlex= "50%">
+                    <mat-label>{{taskConstant?.assigne}}</mat-label>
+                    <mat-form-field class="task-full-width" appearance="outline">
+                    <img matPrefix [src]="selectedUserImage" class="userImage">
+                    <input formControlName="assignee" matInput 
+                    [placeholder]="taskConstant?.selectAssignee" readonly>
+                    <mat-icon class="pointer" matSuffix (click)="openUserDialog()" >assignment_ind</mat-icon>
+                    </mat-form-field>
+                </span>
+            </span>
+            
+        </form>
+    </mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{taskConstant?.cancel}}</button>
+  <button color="primary" [disabled]="!createForm.valid"  mat-button (click)="createUpdateTask()">
+      {{isUpdateMode ? taskConstant?.update : taskConstant?.create}}
+    </button>
+</mat-dialog-actions>
+
+
+<app-loader *ngIf="loading"> </app-loader>

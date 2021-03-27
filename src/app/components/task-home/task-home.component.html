@@ -1,0 +1,146 @@
+<div fxLayout="column">
+  <mat-toolbar fxLayoutAlign="start center">
+    <span>{{taskConstant.applicationName}}
+      <mat-icon class="info-icon" [mdePopoverTriggerFor]="appPopover"
+      mdePopoverTriggerOn="hover">info</mat-icon>
+    </span>
+  </mat-toolbar>
+  <div fxLayout="column">
+    <span id="create-task" class="p-10" fxLayout="row" fxLayoutAlign="center center"> 
+      <button mat-button (click)="openCreateUpdateDialog()"> 
+        <mat-icon>task</mat-icon>
+        {{taskConstant.createTask}} 
+      </button>
+    </span>
+    <span id="task-container" fxLayout="row" fxLayout.xs="column"> 
+      <span id="task-container-column1" class="task-container-column" 
+      fxLayout="column" fxLayoutAlign="start none" fxFlex="50%">
+        <div class="task-container-item" fxFlex="50%">
+          <h2>{{taskConstant.high}}</h2>
+          <div
+            cdkDropList
+            #highList="cdkDropList"
+            [cdkDropListData]="high"
+            [cdkDropListConnectedTo]="[mediumList, lowList]"
+            class="task-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="task-box" *ngFor="let item of high" cdkDrag
+              fxLayout="row" fxLayoutAlign="space-between center">
+              <span fxFlex="70%"> 
+                {{item.message}}
+              </span>
+              <span class="action-items"> 
+                <img [matTooltip]="taskConstant.changeAssignee" matTooltipPosition="above" 
+                class="list-image" [src]="getImageUrl(item.assigned_to)" alt='U' 
+                (click)="openUserDialog(item.id)">
+                <mat-icon [matTooltip]="taskConstant.editTask" matTooltipPosition="above" 
+                class="action-button" (click)="editTask(item.id)">
+                  mode_edit
+                </mat-icon>
+                <mat-icon [matTooltip]="taskConstant.deleteTask" matTooltipPosition="above"
+                 class="action-button" (click)="deleteTask(item.id)">
+                  delete
+                </mat-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="task-container-item" fxFlex="50%">
+          <h2>{{taskConstant.medium}}</h2>
+          <div
+            cdkDropList
+            #mediumList="cdkDropList"
+            [cdkDropListData]="medium"
+            [cdkDropListConnectedTo]="[highList, lowList]"
+            class="task-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="task-box" *ngFor="let item of medium" cdkDrag
+             fxLayout="row" fxLayoutAlign="space-between center">
+              <span fxFlex="80%"> 
+                {{item.message}}
+              </span>
+              <span class="action-items"> 
+                <img [matTooltip]="taskConstant.changeAssignee" matTooltipPosition="above" 
+                class="list-image" [src]="getImageUrl(item.assigned_to)" alt='U' 
+                (click)="openUserDialog(item.id)">
+                <mat-icon [matTooltip]="taskConstant.editTask" matTooltipPosition="above" 
+                class="action-button" (click)="editTask(item.id)">
+                  mode_edit
+                </mat-icon>
+                <mat-icon [matTooltip]="taskConstant.deleteTask" matTooltipPosition="above"
+                 class="action-button" (click)="deleteTask(item.id)">
+                  delete
+                </mat-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+      </span>
+
+      <span id="task-container-column2" class="task-container-column" 
+      fxLayout="row" fxLayoutAlign="start none" fxFlex="50%">
+        <div class="task-container-item" fxFlex="90%">
+          <h2>{{taskConstant.low}}</h2>
+          <div
+            cdkDropList
+            #lowList="cdkDropList"
+            [cdkDropListData]="low"
+            [cdkDropListConnectedTo]="[highList, mediumList]"
+            class="task-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="task-box" *ngFor="let item of low" cdkDrag 
+            fxLayout="row" fxLayoutAlign="space-between center">
+              <span fxFlex="80%"> 
+                {{item.message}}
+              </span>
+              <span class="action-items"> 
+                <img [matTooltip]="taskConstant.changeAssignee" matTooltipPosition="above" 
+                class="list-image" [src]="getImageUrl(item.assigned_to)" alt='U' 
+                (click)="openUserDialog(item.id)">
+                <mat-icon [matTooltip]="taskConstant.editTask" matTooltipPosition="above" 
+                class="action-button" (click)="editTask(item.id)">
+                  mode_edit
+                </mat-icon>
+                <mat-icon [matTooltip]="taskConstant.deleteTask" matTooltipPosition="above"
+                 class="action-button" (click)="deleteTask(item.id)">
+                  delete
+                </mat-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+      </span>
+    </span>
+  </div>
+</div>
+
+<app-loader *ngIf="loading"> </app-loader>
+
+
+<!-- Helper Popover for Task Manager -->
+<mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false" [mdePopoverCloseOnClick]="false">
+  <mat-card style="max-width: 300px">
+    <mat-card-header>
+      <mat-card-title>
+        Helper for Task Manager
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ol>
+        <li>Task manager contains three containers to hold task with differnt priorites(High, Medium, Low).</li>
+        <li>Task creation can be done using Create Task button.</li>
+        <li>Task priority can be changed by dragging item from one conatainer to another</li>
+        <li>On hovering over any item in all three containers User Image, Edit and Delete icon will be shown.
+            <ul>
+              <li>Click on User Image to update the User Image</li>
+              <li>Click on Edit icon to update the task</li>
+              <li>Click on Delete icon to delete the task</li>
+            </ul>
+        </li>
+        <li>In Create/Update task popup click on right most icon to open the Assignee popup</li>
+        <li>Task Manager is responsive for mobile browsers</li>
+      </ol>
+    </mat-card-content>
+  </mat-card>
+</mde-popover>

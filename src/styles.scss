@@ -1,1 +1,65 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// body { overflow-y: hidden; }
+
+$grey : grey;
+$primary: #212121;
+$white: #fff;
+$darkgrey: #555;
+$pink: #c2185b;
+$blue: blue;
+
+.p-10 {
+    padding: 10px;
+}
+.mat-button {
+    background-color: $grey;
+}
+#task-container {
+    height: calc(100vh - 121px);
+}
+
+.task-list {
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+}
+
+#create-task {
+    border-bottom: 1px solid $primary;
+}
+
+.close-button{
+  float: right;
+  top:-24px;
+  right:-24px;
+}
+
+.snackbar-style {
+  background-color: $white;
+  color: $blue;
+  z-index: 1000;
+}
+
+// Start of Thin Scroll Bar styles
+
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 50%;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: $white; 
+  }
+   
+  ::-webkit-scrollbar-thumb {
+    background: $grey; 
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: $darkgrey; 
+  }
+
+  // End of Thin Scroll Bar styles
+
